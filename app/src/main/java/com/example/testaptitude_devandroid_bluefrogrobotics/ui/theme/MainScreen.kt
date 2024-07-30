@@ -24,6 +24,7 @@ import kotlin.random.Random
 
 @Composable
 fun MainScreen() {
+    // Variables d'état pour gérer le jeu
     var gameState by remember { mutableStateOf(GameState.INACTIVE) }
     var currentStep by remember { mutableIntStateOf(1) }
     var errorCount by remember { mutableIntStateOf(0) }
@@ -31,6 +32,7 @@ fun MainScreen() {
     var generatedNumber by remember { mutableIntStateOf(0) }
     var message by remember { mutableStateOf("") }
 
+    // Gestion des étapes de la séquence (boutons 1, 2, 3)
     fun handleSequenceStep(buttonPressed: Int) {
         if (buttonPressed == currentStep) {
             currentStep++
@@ -51,6 +53,7 @@ fun MainScreen() {
         }
     }
 
+    // Gestion de l'étape finale (après la génération du nombre)
     fun handleFinalStep(buttonPressed: Int) {
         if (buttonPressed == generatedNumber) {
             message = "Succès ! Appuyez sur Start pour recommencer."
@@ -71,16 +74,19 @@ fun MainScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Affichage des messages et du compte à rebours
         Text(text = message)
 
         if (countdownValue > 0) {
             Text(text = "Compte à rebours: $countdownValue")
         }
 
+        // Boutons Start et Stop
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(onClick = {
+                // Réinitialisation du jeu au clic sur Start
                 gameState = GameState.STARTED
                 currentStep = 1
                 errorCount = 0
@@ -89,6 +95,7 @@ fun MainScreen() {
                 Text("Start")
             }
             Button(onClick = {
+                // Arrêt du jeu au clic sur Stop
                 gameState = GameState.INACTIVE
                 message = "Appuyez sur Start pour commencer"
             }) {
@@ -96,6 +103,7 @@ fun MainScreen() {
             }
         }
 
+        // Boutons 1, 2 et 3
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -113,8 +121,10 @@ fun MainScreen() {
         }
     }
 
+    // Effet lancé lorsque l'état du jeu change
     LaunchedEffect(gameState) {
         if (gameState == GameState.GENERATING) {
+            // Génération du nombre avec compte à rebours
             countdownValue = Random.nextInt(5, 11)
             while (countdownValue > 0) {
                 delay(1000)
