@@ -1,4 +1,4 @@
-package com.example.testaptitude_devandroid_bluefrogrobotics.ui.theme
+package com.example.testaptitude_devandroid_bluefrogrobotics
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -17,8 +18,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.testaptitude_devandroid_bluefrogrobotics.GameState
-import com.example.testaptitude_devandroid_bluefrogrobotics.NumberGenerator
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -28,7 +27,7 @@ fun MainScreen() {
     var gameState by remember { mutableStateOf(GameState.INACTIVE) }
     var currentStep by remember { mutableIntStateOf(1) }
     var errorCount by remember { mutableIntStateOf(0) }
-    var countdownValue by remember { mutableIntStateOf(0) }
+    val countdownValue by NumberGenerator.countdown.collectAsState()
     var generatedNumber by remember { mutableIntStateOf(0) }
     var message by remember { mutableStateOf("") }
 
@@ -70,7 +69,9 @@ fun MainScreen() {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -125,11 +126,7 @@ fun MainScreen() {
     LaunchedEffect(gameState) {
         if (gameState == GameState.GENERATING) {
             // Génération du nombre avec compte à rebours
-            countdownValue = Random.nextInt(5, 11)
-            while (countdownValue > 0) {
-                delay(1000)
-                countdownValue--
-            }
+            //countdownValue = NumberGenerator.countdown
             generatedNumber = NumberGenerator.generateNumber()
             message = "Appuyez sur le bouton $generatedNumber"
             gameState = GameState.WAITING_FOR_FINAL
