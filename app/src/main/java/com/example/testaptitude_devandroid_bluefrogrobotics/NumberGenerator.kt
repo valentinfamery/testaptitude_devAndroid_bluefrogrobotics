@@ -1,10 +1,5 @@
 package com.example.testaptitude_devandroid_bluefrogrobotics
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.random.Random
@@ -13,15 +8,18 @@ import kotlin.random.Random
 class NumberGenerator {
     companion object {
 
+        // Declaration de la variable MutableStateFlow venant de la librarie Kotlin Coroutines
         var countdown = MutableStateFlow(0)
 
+
         suspend fun generateNumber(): Int {
+            //Géneration du compte a rebours aleatoire et on l'affecte au flow comme valeur
             countdown.value = Random.nextInt(5, 11)
             while (countdown.value > 0) {
-                delay(1000)
-                countdown.value --
+                delay(1000)// on attend 1 seconde
+                countdown.value -- //on decremente de 1
             }
-            return Random.nextInt(1, 4)
+            return Random.nextInt(1, 4) //on renvoi le nombre aleatoire entre 1 et 3
         }
     }
 }

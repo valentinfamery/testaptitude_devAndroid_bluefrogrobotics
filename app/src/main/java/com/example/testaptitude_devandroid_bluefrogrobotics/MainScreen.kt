@@ -126,7 +126,6 @@ fun MainScreen() {
     LaunchedEffect(gameState) {
         if (gameState == GameState.GENERATING) {
             // Génération du nombre avec compte à rebours
-            //countdownValue = NumberGenerator.countdown
             generatedNumber = NumberGenerator.generateNumber()
             message = "Appuyez sur le bouton $generatedNumber"
             gameState = GameState.WAITING_FOR_FINAL
